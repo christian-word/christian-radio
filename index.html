@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="uk">
 <head>
     <meta charset="UTF-8">
@@ -28,9 +28,9 @@
             --card-bg: #ffffff;
             --text-dark: #2d3748;
             --text-light: #718096;
-            --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
-            --shadow-hover: 0 15px 40px rgba(0, 0, 0, 0.12);
-            --border-radius: 16px;
+            --shadow: 0 5px 15px rgba(0, 0, 0, 0.08); /* Зменшив тінь для списку */
+            --shadow-hover: 0 8px 20px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px; /* Зменшив радіус для списку */
             --transition: all 0.3s ease;
         }
 
@@ -46,7 +46,7 @@
             color: var(--text-dark);
             line-height: 1.6;
             min-height: 100vh;
-            padding-bottom: 120px; /* Отступ для плеера */
+            padding-bottom: 120px;
         }
 
         header {
@@ -112,17 +112,20 @@
             border-radius: 2px;
         }
 
+        /* ----- ОНОВЛЕННЯ ДЛЯ LIST VIEW ----- */
         .radio-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            /* Кожна картка займає всю ширину в один стовпець */
+            grid-template-columns: 1fr; 
+            gap: 15px; /* Менший проміжок між елементами списку */
         }
+        /* ---------------------------------- */
 
         .radio-card {
             background-color: var(--card-bg);
             border-radius: var(--border-radius);
             box-shadow: var(--shadow);
-            padding: 25px;
+            padding: 20px 25px; /* Оптимізований відступ */
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -145,7 +148,7 @@
         }
 
         .radio-card:hover {
-            transform: translateY(-8px);
+            transform: translateY(-4px); /* Менший підйом */
             box-shadow: var(--shadow-hover);
         }
 
@@ -189,13 +192,13 @@
         }
 
         .play-button {
-            width: 50px;
-            height: 50px;
+            width: 45px; /* Трохи менша кнопка */
+            height: 45px;
             background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             border: none;
             border-radius: 50%;
             color: white;
-            font-size: 18px;
+            font-size: 16px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -294,9 +297,10 @@
                 font-size: 2rem;
             }
             
-            .radio-grid {
+            /* Для List View на мобільних пристроях залишаємо 1 колонку, яка вже встановлена вище */
+            /* .radio-grid {
                 grid-template-columns: 1fr;
-            }
+            } */
             
             .social-links {
                 flex-direction: column;
@@ -307,6 +311,10 @@
             .social-link {
                 width: 200px;
                 justify-content: center;
+            }
+            
+            .radio-card {
+                 padding: 15px 20px;
             }
         }
     </style>
@@ -320,8 +328,7 @@
     <div class="container">
         <h2 class="section-title">Доступні радіостанції</h2>
         <div class="radio-grid" id="radioGrid">
-            <!-- Радиостанции будут загружены через JavaScript -->
-        </div>
+            </div>
         
         <div class="social-links">
             <a href="https://ruyriy.github.io/VideoYouTube/video_max.html" target="_blank" class="social-link youtube">
@@ -354,6 +361,7 @@
             let currentPlayingCard = null;
 
             // Загрузка плейлиста
+            // Упевніться, що файл playlist.json знаходиться в тій же директорії
             fetch('playlist.json')
                 .then(response => response.json())
                 .then(stations => {
@@ -364,7 +372,7 @@
                 })
                 .catch(error => {
                     console.error('Помилка завантаження плейлиста:', error);
-                    radioGrid.innerHTML = '<p>Не вдалося завантажити список радіостанцій.</p>';
+                    radioGrid.innerHTML = '<p>Не вдалося завантажити список радіостанцій. Переконайтеся, що файл playlist.json існує.</p>';
                 });
             
             function createRadioCard(station) {
